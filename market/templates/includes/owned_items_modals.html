@@ -4,32 +4,32 @@
   }
 </style>
 
-<div class="modal fade" id="Modal-SellConfirm-{{ item.id }}"
+<div class="modal fade" id="Modal-SellConfirm-{{ owned_item.id }}"
      tabindex="-1" role="dialog"
      aria-labelledby="exampleModalLabel"
      aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Sell {{ item.name }}?</h5>
+        <h5 class="modal-title">Sell {{ owned_item.name }}?</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <form method="POST">
-<!--          {{ purchase_form.hidden_tag() }}-->
+          {{ sell_form.hidden_tag() }}
 
           <h4 style="text-center">
-            Are you sure that you want to sell {{ item.name }} for {{ item.price }}
+            Are you sure that you want to sell {{ owned_item.name }} for {{ owned_item.price }}
           </h4>
           <br>
           <h6 style="test-center">
-            By clicking Sell, you will purchase this item.
+            By clicking Sell, you will sell this item.
           </h6>
           <br>
-          <input id="purchased_item" name="purchased_item" type="hidden" value="{{ item.name }}">
-<!--          {{ purchase_form.submit(class="btn btn-outline-success btn-block") }}-->
+          <input id="sell_item" name="sell_item" type="hidden" value="{{ owned_item.name }}">
+          {{ sell_form.submit(class="btn btn-outline-danger btn-block") }}
 
         </form>
       </div>

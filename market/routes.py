@@ -18,6 +18,7 @@ def market_page():
     purchase_form = PurchaseItemForm()
     sell_form = SellItemForm()
     if request.method == "POST":
+        # Purchasing an item
         purchase_item = request.form.get('purchased_item')
         p_item_object = Item.query.filter_by(name=purchase_item).first()
         if p_item_object:
@@ -27,15 +28,28 @@ def market_page():
                       category='success')
             else:
                 flash(f"Unfortunately, you don't have enough money to purchase {p_item_object.name}", category='danger')
+
+        # Selling an item
+        else:
+            sell_item = request.form.get('sell_item')
+            p_sell_item_object = Item.query.filter_by(name=sell_item, owner=current_user.id).first()
+            if p_sell_item_object:
+                p_sell_item_object.sell(current_user)
+                flash(f"Congratulations! You sold {p_sell_item_object.name} for ${p_sell_item_object.price}",
+                      category='success')
+            else:
+                flash(f"Unfortunately, you can't sell {p_sell_item_object.name}, because you don't own it",
+                      category='danger')
+
         return redirect(url_for('market_page'))
     if request.method == "GET":
         items = Item.query.filter_by(owner=None)
         owned_items = Item.query.filter_by(owner=current_user.id)
-        print(owned_items)
         return render_template('market.html',
                                items=items,
                                owned_items=owned_items,
-                               purchase_form=purchase_form
+                               purchase_form=purchase_form,
+                               sell_form=sell_form
                                )
 
 
